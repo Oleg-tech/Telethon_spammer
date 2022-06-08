@@ -1,10 +1,21 @@
 import random
 from telethon import TelegramClient, events
-
+import asyncio
 from config import *
 
 
 client = TelegramClient('anon', api_id, api_hash)
+client.start()
+
+
+async def message(delay: int):
+    while True:
+        await asyncio.sleep(delay)
+        for ID in ID_LIST:
+            try:
+                await client.send_message(entity=ID, message='hello world')
+            except Exception as ex:
+                print(f'This id caused an error:{ID}\n{ex}')
 
 
 @client.on(events.NewMessage(func=lambda e: e.is_private))
@@ -13,17 +24,7 @@ async def answer(event):
         ANSWER_LIST[random.randint(0, len(ANSWER_LIST)-1)]
     )
 
-# Щоб написати всім користувачам: .send Текст повідомлення
-@client.on(events.NewMessage(pattern=r"\.send"))
-async def message(event):
-    if event.chat_id == ADMIN:
-        for ID in ID_LIST:
-            try:
-                await client.send_message(entity=ID, message=event.message.raw_text.replace('.send', ''))
-            except Exception as ex:
-                print(f'This id caused an error:{ID}\n{ex}')
-
 
 if __name__ == '__main__':
-    client.start()
-    client.run_until_disconnected()
+    client.loop.run_until_complete(message(5))
+    # client.run_until_disconnected()
