@@ -1,6 +1,7 @@
 import random
-from telethon import TelegramClient, events
 import asyncio
+from telethon import TelegramClient, events
+
 from config import *
 
 
