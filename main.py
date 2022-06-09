@@ -17,7 +17,7 @@ async def message(delay: int):
                 await client.send_message(entity=ID, message='hello world')
             except Exception as ex:
                 print(f'This id caused an error:{ID}\n{ex}')
-            await asyncio.sleep(2)
+            await asyncio.sleep(0.5)
 
 
 @client.on(events.NewMessage(func=lambda e: e.is_private))
